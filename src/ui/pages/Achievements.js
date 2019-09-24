@@ -1,14 +1,14 @@
 import {AchievementList} from "./../common/AchievementList";
 import {AchievementTopBar} from "./../common/AchievementTopBar";
 import React from "react";
-import { BrowserRouter, Route, Switch} from "react-router-dom";
+import {BrowserRouter, Route, Switch} from "react-router-dom";
 import AchievementsService from "../../gateways/Achievements";
-import {FirstAchievement, SecondAchievement } from "./index";
+import {FirstAchievement, SecondAchievement, ThirdAchievement} from "./index";
 import "./Achievements.css";
 export class Achievements extends React.Component {
   state = {
     achievements: [],
-    response : null
+    response: null
   };
 
   componentDidMount() {
@@ -19,27 +19,29 @@ export class Achievements extends React.Component {
     AchievementsService.fetchAchievements().then(achievements => this.setState({achievements}));
   }
 
-  unlockAchievement() {
-   AchievementsService.unlockAchievement(0).then(response => {
-      if(response.status === 200) {
-        this.setState({response})
-        this.fetchAchievements();
-        return response;
-      } 
-    })
-  }
-
-  async validateForm(){
-    const response = await AchievementsService.unlockAchievement(1);
-    if(response.status === 200) {
-      this.setState({response})
+  async unlockAchievement(id) {
+    const response = await AchievementsService.unlockAchievement(id);
+    if (response.status === 200) {
+      this.setState({response});
       this.fetchAchievements();
       return response;
-    } 
+    }
   }
 
-  resetResponse(){
-    this.setState({response : null})
+  submitForm(goal) {
+    if (goal.length) {
+      AchievementsService.submitForm(goal).then(response => {
+        if (response.status === 200) {
+          this.unlockAchievement(2);
+          this.fetchAchievements();
+          return response;
+        }
+      });
+    }
+  }
+
+  resetResponse() {
+    this.setState({response: null});
   }
 
   render() {
@@ -59,8 +61,31 @@ export class Achievements extends React.Component {
                     <AchievementList achievements={this.state.achievements} />
                     {/* Router For Achievements Task */}
                     <Switch>
-                      <Route exact path="/first" component={()=><FirstAchievement unlockAchievement={()=>this.unlockAchievement()} response={this.state.response} resetResponse={()=>this.resetResponse()}/>}  />              
-                      <Route exact path="/second" component={()=><SecondAchievement validateForm={()=> this.validateForm()}/>}  />
+                      <Route
+                        exact
+                        path="/first"
+                        component={() => (
+                          <FirstAchievement
+                            unlockAchievement={() => this.unlockAchievement(0)}
+                            response={this.state.response}
+                            resetResponse={() => this.resetResponse()}
+                          />
+                        )}
+                      />
+                      <Route
+                        exact
+                        path="/second"
+                        component={() => (
+                          <SecondAchievement validateForm={() => this.unlockAchievement(1)} />
+                        )}
+                      />
+                      <Route
+                        exact
+                        path="/third"
+                        component={() => (
+                          <ThirdAchievement submitForm={goal => this.submitForm(goal)} />
+                        )}
+                      />
 
                       {/* <Route exact path="/new-achievement" component={NewAchievement} /> */}
                     </Switch>
