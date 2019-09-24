@@ -1,13 +1,14 @@
-import { AchievementList } from './../common/AchievementList';
-import { AchievementTopBar } from './../common/AchievementTopBar';
+import {AchievementList} from "./../common/AchievementList";
+import {AchievementTopBar} from "./../common/AchievementTopBar";
 import React from "react";
-import { Router,BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch} from "react-router-dom";
 import AchievementsService from "../../gateways/Achievements";
-import Test from "./Test";
+import FirstAchievement from "./FirstAchievement";
 import "./Achievements.css";
 export class Achievements extends React.Component {
   state = {
-    achievements: []
+    achievements: [],
+    response : null
   };
 
   componentDidMount() {
@@ -19,9 +20,17 @@ export class Achievements extends React.Component {
   }
 
   unlockAchievement() {
-    AchievementsService.unlockAchievement(0).then(res =>
-      res.status === 200 ? this.fetchAchievements() : null
-    );
+   AchievementsService.unlockAchievement(0).then(response => {
+      if(response.status === 200) {
+        this.setState({response})
+        this.fetchAchievements();
+        return response;
+      } 
+    })
+  }
+
+  resetResponse(){
+    this.setState({response : null})
   }
 
   render() {
@@ -29,44 +38,27 @@ export class Achievements extends React.Component {
 
     return (
       <BrowserRouter>
-      <div className="sui-l-app-layout">
-        <div className="sui-l-app-layout__subapp">
-          <div className="sui-l-app-layout__main">
-            <div className="sui-l-app-layout__page">
-               {/* TopBar */}
-             <AchievementTopBar/>
-              <div className="sui-l-app-layout__page-scroll">
-                <div className="sui-l-container as--gutter-xl@sm">
-                 <AchievementList achievements={this.state.achievements}  />
-                </div>
-              </div>
-            </div>
-            {/* Achievements APP */}
-            <div className="sui-l-app-layout__page">
-             
-              {/* Scroll Container For Achievements */}
-              <div className="sui-l-app-layout__page-scroll">
-                <div className="sui-l-container as--gutter-xl@sm">
-                  <div className="sui-g-grid__item">
-                    
+        <div className="sui-l-app-layout">
+          <div className="sui-l-app-layout__subapp">
+            <div className="sui-l-app-layout__main">
+              <div className="sui-l-app-layout__page">
+                {/* TopBar */}
+                <AchievementTopBar />
+                <div className="sui-l-app-layout__page-scroll">
+                  <div className="sui-l-container as--gutter-xl@sm">
+                    {/* List of Achievements */}
+                    <AchievementList achievements={this.state.achievements} />
+                    {/* Router For Achievements Task */}
                     <Switch>
-                      <Route exact path="/test" component={Test} />
+                      <Route exact path="/first" component={()=><FirstAchievement unlockAchievement={()=>this.unlockAchievement()} response={this.state.response} resetResponse={()=>this.resetResponse()}/>}  />
                       {/* <Route exact path="/new-achievement" component={NewAchievement} /> */}
                     </Switch>
-
-
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-
-        {/* <div className="sui-l-app-layout__subapp">
-          <p>jesi</p>
-          <button onClick={() => this.unlockAchievement()}>unlock</button>
-        </div> */}
-      </div>
       </BrowserRouter>
     );
   }

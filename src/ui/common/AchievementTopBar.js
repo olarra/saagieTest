@@ -9,16 +9,33 @@ export function AchievementTopBar({}) {
       </a>
       <div className="sui-o-topbar__primary">
         <div className="sui-o-topbar__title">
-          <Link
-            to="/test"
-            style={{
-              textDecoration: "none",
-              color: "#FFF"
-            }}>
-            New achievement
+          <Link to="/first" style={styles.link}>
+            Unlock With Post
+          </Link>
+        </div>
+        <div className="sui-o-topbar__title">
+          <Link to="/second" style={styles.link}>
+            Create an achievement form
+          </Link>
+        </div>
+        <div className="sui-o-topbar__title">
+          <Link to="/third" style={styles.link}>
+            Submit an achievement
+          </Link>
+        </div>
+        <div className="sui-o-topbar__title">
+          <Link to="/fourth" style={styles.link}>
+            Fourth achievement
           </Link>
         </div>
       </div>
     </div>
   );
 }
+
+const styles = {
+  link: {
+    textDecoration: "none",
+    color: "#FFF"
+  }
+};
