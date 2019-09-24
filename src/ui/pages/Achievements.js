@@ -3,7 +3,7 @@ import {AchievementTopBar} from "./../common/AchievementTopBar";
 import React from "react";
 import { BrowserRouter, Route, Switch} from "react-router-dom";
 import AchievementsService from "../../gateways/Achievements";
-import FirstAchievement from "./FirstAchievement";
+import {FirstAchievement, SecondAchievement } from "./index";
 import "./Achievements.css";
 export class Achievements extends React.Component {
   state = {
@@ -29,6 +29,15 @@ export class Achievements extends React.Component {
     })
   }
 
+  async validateForm(){
+    const response = await AchievementsService.unlockAchievement(1);
+    if(response.status === 200) {
+      this.setState({response})
+      this.fetchAchievements();
+      return response;
+    } 
+  }
+
   resetResponse(){
     this.setState({response : null})
   }
@@ -50,7 +59,9 @@ export class Achievements extends React.Component {
                     <AchievementList achievements={this.state.achievements} />
                     {/* Router For Achievements Task */}
                     <Switch>
-                      <Route exact path="/first" component={()=><FirstAchievement unlockAchievement={()=>this.unlockAchievement()} response={this.state.response} resetResponse={()=>this.resetResponse()}/>}  />
+                      <Route exact path="/first" component={()=><FirstAchievement unlockAchievement={()=>this.unlockAchievement()} response={this.state.response} resetResponse={()=>this.resetResponse()}/>}  />              
+                      <Route exact path="/second" component={()=><SecondAchievement validateForm={()=> this.validateForm()}/>}  />
+
                       {/* <Route exact path="/new-achievement" component={NewAchievement} /> */}
                     </Switch>
                   </div>
