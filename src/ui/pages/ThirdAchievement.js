@@ -5,7 +5,7 @@ export default ({submitForm}) => {
   return (
     <div className="sui-m-card">
       <div className="sui-m-card__content">
-        <div className="sui-m-card__title">Achievement Creation Form</div>
+        <div className="sui-m-card__title">Achievement Submission</div>
         <div className="sui-m-card__details">
          <AchievementForm  action={(goal)=>submitForm(goal)} labelBtn="Submit Goal" colorBtn="success" />
         </div>
