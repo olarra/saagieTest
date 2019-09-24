@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { Achievements } from './pages/Achievements';
+import { Achievements } from './ui/pages/Achievements';
 
 class App extends Component {
   render() {

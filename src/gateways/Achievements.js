@@ -3,7 +3,7 @@ import axios from "axios";
 
 export default class AchievementsService {
 
-  static fetchAchievements = user =>
+  static fetchAchievements = () =>
   axios
     .get("/api/achievements")
     .then(res => {
