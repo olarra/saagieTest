@@ -3,7 +3,7 @@ import {AchievementTopBar} from "./../common/AchievementTopBar";
 import React from "react";
 import {BrowserRouter, Route, Switch} from "react-router-dom";
 import AchievementsService from "../../gateways/Achievements";
-import {FirstAchievement, SecondAchievement, ThirdAchievement} from "./index";
+import {FirstAchievement, SecondAchievement, ThirdAchievement, Surprise} from "./index";
 import "./Achievements.css";
 export class Achievements extends React.Component {
   state = {
@@ -21,7 +21,7 @@ export class Achievements extends React.Component {
 
   async unlockAchievement(id) {
     const response = await AchievementsService.unlockAchievement(id);
-    if (response.status === 200) {
+    if (response.status === 200 && id !== 3) {
       this.setState({response});
       this.fetchAchievements();
       return response;
@@ -84,6 +84,13 @@ export class Achievements extends React.Component {
                         path="/third"
                         component={() => (
                           <ThirdAchievement submitForm={goal => this.submitForm(goal)} />
+                        )}
+                      />
+                       <Route
+                        exact
+                        path="/surprise"
+                        component={() => (
+                          <Surprise validateAchievement={this.unlockAchievement(3)}/>
                         )}
                       />
 

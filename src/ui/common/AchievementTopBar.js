@@ -24,8 +24,8 @@ export function AchievementTopBar({}) {
           </Link>
         </div>
         <div className="sui-o-topbar__title">
-          <Link to="/fourth" style={styles.link}>
-            Fourth achievement
+          <Link to="/surprise" style={styles.link}>
+             Suprise 🎁
           </Link>
         </div>
       </div>

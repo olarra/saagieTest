@@ -14,6 +14,7 @@
     "react-pose": "^4.0.8",
     "react-router-dom": "4.3.1",
     "react-scripts": "^2.1.8",
+    "react-syntax-highlighter": "^11.0.2",
     "saagie-ui": "^0.42.3"
   },
   "proxy": "http://localhost:4000",
