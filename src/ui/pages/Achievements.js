@@ -21,7 +21,7 @@ export class Achievements extends React.Component {
 
   async unlockAchievement(id) {
     const response = await AchievementsService.unlockAchievement(id);
-    if (response.status === 200 && id !== 3) {
+    if (response.status === 200) {
       this.setState({response});
       this.fetchAchievements();
       return response;
@@ -90,7 +90,7 @@ export class Achievements extends React.Component {
                         exact
                         path="/surprise"
                         component={() => (
-                          <Surprise validateAchievement={this.unlockAchievement(3)}/>
+                          <Surprise/>
                         )}
                       />
 
